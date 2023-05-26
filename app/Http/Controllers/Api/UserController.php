@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\Link;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -14,12 +15,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json("done");
-        // try {
-        //     return response()->json(new UserResource(auth()->user()), 200);
-        // } catch (\Exception $e) {
-        //     return response()->json(['error' => $e->getMessage()], 400);
-        // }
+        try {
+            return response()->json(new UserResource(auth()->user()), 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 
     /**
@@ -45,8 +45,12 @@ class UserController extends Controller
 
     public function show($name)
     {
-        $user = User::where("name", $name)->first();
-        return response()->json(new UserResource($user), 200);
+        try {
+            $user = User::with('links')->where("name", $name)->first();
+            return response()->json(['user' => $user, 'links' => $user->links]);
+        } catch (\Exception $e) {
+            return response()->json($e);
+        }
     }
 
 

@@ -3,6 +3,11 @@
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\LinkController;
+use App\Http\Controllers\Api\LinkImageController;
+use App\Http\Controllers\Api\ThemeController;
+use App\Http\Controllers\Api\UserImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,11 +26,10 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::get("test", fn () => response()->json("test"));
     Route::get('users', [UserController::class, 'index']);
     Route::patch('users/{user}', [UserController::class, 'update']);
 
-    Route::post('user-image', [UserImageController::class, 'stor    e']);
+    Route::post('user-image', [UserImageController::class, 'store']);
 
     Route::get('links', [LinkController::class, 'index']);
     Route::post('links', [LinkController::class, 'store']);
@@ -39,4 +43,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 
-Route::get("users/{name}", fn ($name) => response()->json(User::where("name", $name)->first()->get()));
+Route::get("users/{name}",  [UserController::class, "show"]);

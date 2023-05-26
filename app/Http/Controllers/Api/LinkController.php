@@ -22,6 +22,7 @@ class LinkController extends Controller
         }
     }
 
+
     /**
      * Store a newly created resource in storage.
      */
@@ -77,10 +78,12 @@ class LinkController extends Controller
         try {
             if (
                 !is_null($link->image)
-                && file_exists(public_path() . $link->image
-                && $link->image != '/user-placeholder.png'
-                && $link->image != '/link-placeholder.png'
-            )) {
+                && file_exists(
+                    public_path() . $link->image
+                        && $link->image != '/user-placeholder.png'
+                        && $link->image != '/link-placeholder.png'
+                )
+            ) {
                 unlink(public_path() . $link->image);
             }
             $link->delete();

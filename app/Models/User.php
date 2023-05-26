@@ -49,4 +49,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Theme::class);
     }
+    public function links()
+    {
+        return $this->hasMany(Link::class);
+    }
 }
