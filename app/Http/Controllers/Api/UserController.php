@@ -27,15 +27,17 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|max:25',
             'bio' => 'sometimes|max:80',
+            'phone' => 'sometimes',
+            'address' => 'sometimes',
+            'website' => 'sometimes',
+            'phone_visibility' => 'sometimes',
         ]);
 
         try {
-            $user->name = $request->input('name');
-            $user->bio = $request->input('bio');
-            $user->save();
+            $user->update($data);
 
             return response()->json('USER DETAILS UPDATED', 200);
         } catch (\Exception $e) {
@@ -47,7 +49,10 @@ class UserController extends Controller
     {
         try {
             $user = User::with('links')->where("name", $name)->first();
-            return response()->json(['user' => $user, 'links' => $user->links]);
+            if ($user->phone_visibility == 0) {
+                $user->phone = "";
+            }
+            return response()->json(['user' => new UserResource($user), 'links' => $user->links]);
         } catch (\Exception $e) {
             return response()->json($e);
         }
