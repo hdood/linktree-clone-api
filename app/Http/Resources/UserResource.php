@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'bio' => $this->bio,
             'phone' => $this->phone,
+            'country_code' => $this->country_code,
             'address' => $this->address,
             'website' => $this->website,
             'phone_visibility' => $this->phone_visibility == 1 ? true : false,

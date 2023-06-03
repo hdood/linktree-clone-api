@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'address',
         'phone',
+        'country_code',
         'website',
         'phone_visibility'
     ];
@@ -56,5 +57,9 @@ class User extends Authenticatable
     public function links()
     {
         return $this->hasMany(Link::class);
+    }
+    public function phones()
+    {
+        return $this->hasMany(Phone::class);
     }
 }

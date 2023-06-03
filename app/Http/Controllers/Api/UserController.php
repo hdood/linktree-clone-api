@@ -34,7 +34,10 @@ class UserController extends Controller
             'address' => 'sometimes',
             'website' => 'sometimes',
             'phone_visibility' => 'sometimes',
+            'country_code' => 'sometimes'
         ]);
+
+
 
         try {
             $user->update($data);
@@ -48,7 +51,8 @@ class UserController extends Controller
     public function show($name)
     {
         try {
-            $user = User::with('links')->where("name", $name)->first();
+
+            $user = User::where("name", $name)->first();
             if ($user->phone_visibility == 0) {
                 $user->phone = "";
             }
