@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\LinksCollection;
 use App\Http\Resources\UserResource;
-use App\Models\Link;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -22,23 +22,27 @@ class UserController extends Controller
         }
     }
 
+    public function  searchByName($term)
+    {
+        try {
+            $users = User::where("name", "like", $term . "%")->get();
+            return UserResource::collection($users);
+        } catch (\Throwable $th) {
+
+            return response()->json(["error" => $th]);
+        }
+    }
+
     /**
-     * Update the specified resource in storage.    
+     * Update the specified resource in storage.
      */
     public function update(Request $request, User $user)
     {
         $data = $request->validate([
-            'name' => 'required|max:25',
+
+            'name' => ['required', 'max:25', "unique:users,name,{$user->id}"],
             'bio' => 'sometimes|max:80',
-            'phone' => 'sometimes',
-            'address' => 'sometimes',
-            'website' => 'sometimes',
-            'phone_visibility' => 'sometimes',
-            'country_code' => 'sometimes'
         ]);
-
-
-
         try {
             $user->update($data);
 
@@ -48,18 +52,43 @@ class UserController extends Controller
         }
     }
 
+    public function updateContact(Request $request, User $user)
+    {
+        $data = $request->validate([
+            'phone' => 'sometimes',
+            'address' => 'sometimes',
+            'website' => 'sometimes',
+            'phone_visibility' => 'sometimes',
+            'country_code' => 'sometimes'
+        ]);
+        try {
+            $user->update($data);
+            return response()->json('USER DETAILS UPDATED', 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+
     public function show($name)
     {
         try {
-
             $user = User::where("name", $name)->first();
             if ($user->phone_visibility == 0) {
                 $user->phone = "";
             }
-            return response()->json(['user' => new UserResource($user), 'links' => $user->links]);
+            return response()->json(['user' => new UserResource($user), 'links' => new LinksCollection($user->links)]);
         } catch (\Exception $e) {
             return response()->json($e);
         }
+    }
+
+    public function checkName($name)
+    {
+        $user = User::where("name", $name)->first();
+        if ($user) {
+            return response()->json("false");
+        }
+        return response()->json("true");
     }
 
 

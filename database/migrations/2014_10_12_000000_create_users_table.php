@@ -19,10 +19,11 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
+            $table->string("cover_image")->nullable();
             $table->string('country_code')->nullable();
             $table->boolean('phone_visibility')->default(1);
             $table->string('bio')->nullable();
-            $table->text('image')->nullable();
+            $table->string('image')->default('/user-placeholder.png');
             $table->text('portfolio')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

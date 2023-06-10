@@ -28,20 +28,16 @@ class LinkController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|max:20',
+            'icon' => 'required',
             'url' => 'required|active_url',
         ]);
 
+
         try {
-            $link = new Link;
-
-            $link->user_id = auth()->user()->id;
-            $link->name = $request->input('name');
-            $link->url = $request->input('url');
-            $link->image = '/link-placeholder.png';
-
-            $link->save();
+            $data['user_id'] = auth()->user()->id;
+            Link::create($data);
 
             return response()->json('NEW LINK CREATED', 200);
         } catch (\Exception $e) {
@@ -76,16 +72,6 @@ class LinkController extends Controller
     public function destroy(Link $link)
     {
         try {
-            if (
-                !is_null($link->image)
-                && file_exists(
-                    public_path() . $link->image
-                        && $link->image != '/user-placeholder.png'
-                        && $link->image != '/link-placeholder.png'
-                )
-            ) {
-                unlink(public_path() . $link->image);
-            }
             $link->delete();
 
             return response()->json('LINK DETAILS DELETEED', 200);

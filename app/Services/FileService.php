@@ -38,4 +38,36 @@ class FileService
 
         return $model;
     }
+    public function updateCover($model, $request)
+    {
+        $image = Image::make($request->file('image'));
+
+        if (!empty($model->cover_image)) {
+            $currentImage = public_path() . $model->cover_image;
+
+            if (
+                file_exists($currentImage)
+                && $currentImage != public_path() . '/user-placeholder.png'
+                && $currentImage != public_path() . '/link-placeholder.png'
+            ) {
+                unlink($currentImage);
+            }
+        }
+
+        $file = $request->file('image');
+        $extension = $file->getClientOriginalExtension();
+
+        $image->crop(
+            $request->width,
+            $request->height,
+            $request->left,
+            $request->top
+        );
+
+        $name = time() . '.' . $extension;
+        $image->save(public_path() . '/files/' . $name);
+        $model->cover_image = '/files/' . $name;
+
+        return $model;
+    }
 }

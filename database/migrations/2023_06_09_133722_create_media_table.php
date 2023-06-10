@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('links', function (Blueprint $table) {
+        Schema::create('media', function (Blueprint $table) {
             $table->id();
-
+            $table->string("type");
+            $table->json("data");
             $table->foreignId('user_id');
-            $table->string('name');
-            $table->text('url');
-            $table->string("icon");
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('links');
+        Schema::dropIfExists('media');
     }
 };

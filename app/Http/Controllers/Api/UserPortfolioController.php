@@ -14,7 +14,7 @@ class UserPortfolioController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['portfolio' => 'required|mimes:png,jpg,jpeg,pdf', 'user_id' => 'required']);;
+        $request->validate(['portfolio' => 'required|mimes:png,jpg,webp,jpeg,pdf', 'user_id' => 'required']);
         $user = User::find($request->user_id);
 
 
@@ -22,15 +22,10 @@ class UserPortfolioController extends Controller
             return response()->json("user does not exist", 401);
         }
 
-        if (!empty($user->portfolio)) {
-            $currentPortfolio = public_path() . $user->portfolio;
-
-            if (
-                file_exists($currentPortfolio)
-            ) {
-                unlink($currentPortfolio);
-            }
+        if (Storage::exists($user->portfolio)) {
+            Storage::delete($user->portfolio);
         }
+
 
         $link = $request->file('portfolio')->store('public');
 

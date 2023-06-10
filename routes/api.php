@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\LinkImageController;
 use App\Http\Controllers\Api\ThemeController;
 use App\Http\Controllers\Api\UserImageController;
 use App\Http\Controllers\Api\UserPortfolioController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\UserCoverImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +31,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('users', [UserController::class, 'index']);
     Route::patch('users/{user}', [UserController::class, 'update']);
+    Route::patch('users/contact/{user}', [UserController::class, 'updateContact']);
+    Route::get('users/search/{term}', [UserController::class, "searchByName"]);
 
     Route::post('user-image', [UserImageController::class, 'store']);
+    Route::post('user-cover-image', [UserCoverImageController::class, 'store']);
 
     Route::get('links', [LinkController::class, 'index']);
     Route::post('links', [LinkController::class, 'store']);
@@ -45,7 +50,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('themes', [ThemeController::class, 'index']);
     Route::patch('themes', [ThemeController::class, 'update']);
+
+    // media routes
+    Route::post("media/embedded", [MediaController::class, "storeEmbeddedMedia"]);
+    Route::post("media/file", [MediaController::class, "storeFileMedia"]);
+    Route::get("media/{user}", [MediaController::class, "index"]);
 });
 
 
 Route::get("users/{name}",  [UserController::class, "show"]);
+Route::get('users/check-name/{name}', [UserController::class, "checkName"]);

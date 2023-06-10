@@ -21,6 +21,7 @@ class User extends Authenticatable
         'theme_id',
         'name',
         'image',
+        'cover_image',
         'bio',
         'email',
         'password',
@@ -61,5 +62,9 @@ class User extends Authenticatable
     public function phones()
     {
         return $this->hasMany(Phone::class);
+    }
+    public function medias()
+    {
+        return $this->hasMany(Media::class);
     }
 }

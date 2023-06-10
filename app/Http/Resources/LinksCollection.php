@@ -19,8 +19,8 @@ class LinksCollection extends ResourceCollection
                 'id' => $link->id,
                 'user_id' => $link->user_id,
                 'name' => $link->name,
+                'icon' => $link->icon,
                 'url' => $link->url,
-                'image' => url('/') . $link->image,
             ];
         });
     }

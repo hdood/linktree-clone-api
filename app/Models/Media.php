@@ -5,15 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Link extends Model
+class Media extends Model
 {
 
     protected $fillable = [
-        'name',
-        'url',
-        'icon',
-        'user_id'
+        'user_id',
+        'type',
+        'data'
     ];
-
     use HasFactory;
 }

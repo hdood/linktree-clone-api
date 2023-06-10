@@ -28,6 +28,7 @@ class UserResource extends JsonResource
             'website' => $this->website,
             'phone_visibility' => $this->phone_visibility == 1 ? true : false,
             'image' => url('/') . $this->image,
+            'cover_image' => url('/') . $this->cover_image,
             'portfolio' => !$this->portfolio  ? "" : url('/') . Storage::url($this->portfolio),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
