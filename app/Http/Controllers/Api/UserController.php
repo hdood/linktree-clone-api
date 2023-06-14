@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LinksCollection;
 use App\Http\Resources\UserResource;
+use App\Models\Link;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -42,6 +43,8 @@ class UserController extends Controller
 
             'name' => ['required', 'max:25', "unique:users,name,{$user->id}"],
             'bio' => 'sometimes|max:80',
+            'designation' => 'sometimes',
+            'full_name' => 'sometimes'
         ]);
         try {
             $user->update($data);
@@ -76,7 +79,8 @@ class UserController extends Controller
             if ($user->phone_visibility == 0) {
                 $user->phone = "";
             }
-            return response()->json(['user' => new UserResource($user), 'links' => new LinksCollection($user->links)]);
+            $links = Link::where('user_id', $user->id)->orderBy('order', 'asc')->get();
+            return response()->json(['user' => new UserResource($user), 'links' => new LinksCollection($links)]);
         } catch (\Exception $e) {
             return response()->json($e);
         }

@@ -11,10 +11,18 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest')
     ->name('register');
+Route::post('/register/google', [RegisteredUserController::class, 'googleRegister'])
+    ->middleware('guest')
+    ->name('register');
+
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest')
     ->name('login');
+
+Route::post('/login/google', [AuthenticatedSessionController::class, 'googleLogin'])
+    ->middleware('guest')
+    ->name('login-google');
 
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
     ->middleware('guest')

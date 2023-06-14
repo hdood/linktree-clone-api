@@ -16,10 +16,15 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
 
+
+
+
         return [
             'id' => $this->id,
             'theme_id' => $this->theme_id,
             'name' => $this->name,
+            'designation' => $this->designation,
+            'full_name' => $this->full_name,
             'email' => $this->email,
             'bio' => $this->bio,
             'phone' => $this->phone,
@@ -27,7 +32,7 @@ class UserResource extends JsonResource
             'address' => $this->address,
             'website' => $this->website,
             'phone_visibility' => $this->phone_visibility == 1 ? true : false,
-            'image' => url('/') . $this->image,
+            'image' => strpos($this->image, "http") !== false ?  $this->image : url('/') . $this->image,
             'cover_image' => url('/') . $this->cover_image,
             'portfolio' => !$this->portfolio  ? "" : url('/') . Storage::url($this->portfolio),
             'created_at' => $this->created_at,

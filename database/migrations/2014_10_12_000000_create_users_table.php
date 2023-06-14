@@ -17,7 +17,10 @@ return new class extends Migration
             $table->integer('theme_id')->default(1);
             $table->string('name');
             $table->string('website')->nullable();
+            $table->string('designation')->nullable();
+            $table->string('full_name')->nullable();
             $table->string('address')->nullable();
+            $table->boolean('public')->default(1);
             $table->string('phone')->nullable();
             $table->string("cover_image")->nullable();
             $table->string('country_code')->nullable();

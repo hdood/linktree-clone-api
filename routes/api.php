@@ -41,6 +41,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('links', [LinkController::class, 'store']);
     Route::patch('links/{link}', [LinkController::class, 'update']);
     Route::delete('links/{link}', [LinkController::class, 'destroy']);
+    Route::post("links/reorder", [LinkController::class, "reorder"]);
 
     Route::post('link-image', [LinkImageController::class, 'store']);
 
@@ -55,6 +56,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post("media/embedded", [MediaController::class, "storeEmbeddedMedia"]);
     Route::post("media/file", [MediaController::class, "storeFileMedia"]);
     Route::get("media/{user}", [MediaController::class, "index"]);
+    Route::delete("media/file/{media}", [MediaController::class, "deleteFile"]);
+    Route::delete("media/{media}", [MediaController::class, "destroy"]);
 });
 
 

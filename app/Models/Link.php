@@ -10,6 +10,7 @@ class Link extends Model
 
     protected $fillable = [
         'name',
+        'order',
         'url',
         'icon',
         'user_id'

@@ -15,13 +15,31 @@ class LinkController extends Controller
     public function index()
     {
         try {
-            $links = Link::where('user_id', auth()->user()->id)->get();
+            $links = Link::where('user_id', auth()->user()->id)->orderBy('order', 'asc')->get();
             return response()->json(new LinksCollection($links), 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
 
+
+    public function reorder(Request $request)
+    {
+
+        try {
+            $data = $request->validate([
+                "links" => "required",
+            ]);
+            $links = (array) json_decode($data['links']);
+            foreach ($links as $link) {
+                Link::where('id', $link->id)->update(['order' => $link->order]);
+            }
+
+            return 'LINKS REORDERED SUCCESSFULLY';
+        } catch (\Throwable $th) {
+            return $th;
+        }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -32,6 +50,7 @@ class LinkController extends Controller
             'name' => 'required|max:20',
             'icon' => 'required',
             'url' => 'required|active_url',
+            'order' => 'required'
         ]);
 
 

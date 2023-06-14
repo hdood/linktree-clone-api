@@ -21,6 +21,7 @@ class LinksCollection extends ResourceCollection
                 'name' => $link->name,
                 'icon' => $link->icon,
                 'url' => $link->url,
+                'order' => $link->order
             ];
         });
     }
